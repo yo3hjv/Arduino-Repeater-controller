@@ -1,0 +1,119 @@
+/*
+   This junk is meant to controll a small repeater in UHF made of two portable radios 
+   Motorola GP300.
+   
+   Features:
+       -Courtesy tone
+       -Beacon
+       -Battery status announced by beacon or by courtesy tone
+       -Tx radio disconnect after 5 minutes of inactivity
+       -On board accelerometer for earthquake detector 
+       -Earthquake alert
+       -etc
+       
+
+       This code is released under "Beerware License" (buy me a beer when you see me).
+       Author: Adrian Florescu YO3HJV
+       http:///www.yo3hjv@blogspot.com
+       
+       Jan.2016        
+       The work is always on progress
+       This is version 4.2
+
+ */
+
+               
+             // Hardware connections
+               int ptt = 13;       //  PTT  pin
+               int carDet = 10;    //  Carrier Detect pin (+U=detection). Pin 10 is tied up with a 10kOhm resistor and to a transistor (collector)
+             
+             // Some variable for reading the hardware status
+               int val = 0;        //  variable for reading the pin status
+               
+      //  BEACON        
+             // Constant and variable for Beacon timer
+                   unsigned long previousMillis = 0;   // will store last time beacon transmitted            
+                   const long interval = 600000;           // 10 min    interval at which to beacon (milliseconds)
+
+
+
+
+             void setup() {
+                          
+                       // Hardware init
+                           pinMode(ptt, OUTPUT);      // declare PTT pin as output
+                           pinMode(carDet, INPUT);    // declare Carier Detect pin as input
+                           }
+
+
+
+
+          void loop()                // Main program
+                        {
+                          
+                      val = digitalRead(carDet);  // Variable for SWITCH-CASE  LOW = Carrier/PL Detect present at receiving radio, HIGH = NO Carrier/NO PL
+                      
+               switch(val)  {                        
+                             case LOW:                     //  Receiving Carrier or correct PL
+                             digitalWrite(ptt, HIGH);      //  Tx PTT @ +5V
+                             break;     
+       
+                             case HIGH:                    //  StandBy, NO Carrier / NO PL       
+                             courtesy();                   //  Execute "courtesy" function. 
+                             break;
+                            }
+               
+                             
+                              
+                              
+           //Rutina pentru determinarea timpului de baliza    
+               unsigned long currentMillis = millis();     // Read millis (from first start of the board) and load value to current Millis variable
+
+                       if (currentMillis - previousMillis >= interval) {   // compare INTERVAL with the difference between currentMillis and previousMillis
+                          previousMillis = currentMillis;                  // save the last time you beacon
+                          
+                           
+                            if (val = LOW) {          //  Do nothing if the repeater is already in QSO
+                                           } 
+                            else {                         
+                               digitalWrite(ptt, HIGH); // If the repeater is in StandBy, then Tx
+                               beacon();                // Execute "beacon" function
+                                  }
+                                                                        }
+                       else {
+                            }                                              // if INTERVAL is less, do nothing           
+                                                                        
+                        }   // END of MAIN LOOP
+
+
+
+
+
+
+
+  void beacon()   // Beacon audio and then StanBy           
+               {
+                  // I played a little with the tones
+          noTone(8);
+       delay(350);
+            tone(8, 770, 700);
+       delay(300);
+            tone(8, 3100, 700);
+       delay(300);
+            tone(8, 990, 700);
+       delay(300);
+            tone(8, 2400, 700);
+       delay(300);
+          noTone(8);
+             digitalWrite(ptt, LOW);  // Go to StandBy
+           }  // Thank you! END of Beacon
+
+        
+        
+        
+  void courtesy()   // Courtesy Tone at the end of transmission
+           {
+       delay(120);
+            tone(8, 2800, 80);
+            digitalWrite(ptt, LOW);  // Go to StandBy
+           }  // Thank you! END of Courtesy Tone
