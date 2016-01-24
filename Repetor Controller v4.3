@@ -1,0 +1,166 @@
+/*
+   This junk is meant to controll a small repeater in UHF made of two portable radios 
+   Motorola GP300.
+   
+   Features in this version:
+       -Courtesy tone  - done v4.2
+       -Beacon   - done v4.2
+       -Battery status announced by beacon or by courtesy tone done v4.3
+       -Tx radio disconnect after 5 minutes of inactivity
+       -On board accelerometer for earthquake detector 
+       -Earthquake alert
+       -etc
+       
+       The work is always on progress
+       
+       This is version 4.3
+       
+       This code is released under "Beerware License" (buy me a beer when you see me).
+       Author: Adrian Florescu YO3HJV
+       http:///www.yo3hjv@blogspot.com
+
+ */
+
+               
+             // Hardware connections
+               int ptt = 13;       //  PTT  pin
+               int carDet = 10;    //  Carrier Detect pin (+U=detection). Pin 10 is tied up with a 10kOhm resistor and to a transistor (collector)
+             
+             // Some variable for reading the hardware status
+               int val = 0;          //  variable for reading the pin status
+               float slaV = 0;       //  variable to store voltage from the SLA Battery
+               int vMath = 0;        // used to calculate ADC voltage and to compare for fBeep
+               
+      //  BEACON & COURTESY TONE       
+             // Constant and variable for Beacon and courtesy tone 
+                   unsigned long previousMillis = 0;       // will store last time beacon transmitted            
+                   const long interval = 600000;           // 10 min    interval at which to beacon (milliseconds)
+              
+                   int fBeep;                       // Nice default frequency for the Courtesy tone (TheBeep)    2800Hz sound nice!
+                   int beepL;                       // The lenght of the beep. Maybe we will also use this for some telemetry
+     
+      //  Repeater Parameters Setup
+      
+                   int aKerch = 100;                // (mSec)  The delay for AntiKerchunk filter
+
+
+             void setup() {
+                          
+                                          
+                       Serial.begin(57600);            // This helps to see something for debugging. High speed for quick response
+                       
+                          // Hardware init
+                           pinMode(ptt, OUTPUT);      // declare PTT pin as output
+                           pinMode(carDet, INPUT);    // declare Carier Detect pin as input
+                           
+                           }
+
+
+
+
+          void loop()                // Main program
+                        {
+                     
+          //     Serial.println("Voltage:");
+          //     Serial.println(slaV);             // "I Want to Know What Love Is...." print to serial the value read by ADC  
+               
+               
+                      val = digitalRead(carDet);          // Variable for SWITCH-CASE  LOW = Carrier/PL Detect present at receiving radio, HIGH = NO Carrier/NO PL
+                      
+                      
+                      
+               switch(val)  {                        
+                             case LOW:                     //  Receiving Carrier or correct PL
+                             digitalWrite(ptt, HIGH);      //  Tx PTT @ +5V
+                             delay(aKerch);                //  AntiKerchunk delay goes here
+                             break;     
+       
+                             case HIGH:                    //  StandBy, NO Carrier / NO PL       
+                             courtesy();                   //  Execute "courtesy" function. 
+                             break;
+                            }
+               
+                             
+                              
+                              
+           //Rutina pentru determinarea timpului de baliza    
+               unsigned long currentMillis = millis();     // Read millis (from first start of the board) and load value to current Millis variable
+
+                       if (currentMillis - previousMillis >= interval) {   // compare INTERVAL with the difference between currentMillis and previousMillis
+                          previousMillis = currentMillis;                  // save the last time you beacon
+                          
+                           
+                            if (val = LOW) {          //  Do nothing if the repeater is already in QSO
+                                           } 
+                            else {                         
+                               digitalWrite(ptt, HIGH); // If the repeater is in StandBy, then Tx
+                               beacon();                // Execute "beacon" function
+                                  }
+                                                                        }
+                       else {
+                            }                                              // if INTERVAL is less, do nothing           
+                                                                        
+                        }   // END of MAIN LOOP
+
+
+
+
+
+
+
+  void beacon()   // Beacon audio and then StanBy           
+               {
+                  // I played a little with the tones
+          noTone(8);
+       delay(350);
+            tone(8, 770, 700);
+       delay(300);
+            tone(8, 3100, 700);
+       delay(300);
+            tone(8, 990, 700);
+       delay(300);
+            tone(8, 2400, 700);
+       delay(300);
+          noTone(8);
+             digitalWrite(ptt, LOW);  // Go to StandBy
+           }  // Thank you! END of Beacon
+
+        
+        
+        
+  void courtesy()   // Courtesy Tone at the end of transmission
+           {
+       delay(100);                                     // Wait for the portable radio who stops transmitting to get into the receiving mode to be able to hear the tone
+       
+       //  HERE WE TAKE MEASUREMENTS FROM THE SLA BATTERY
+  
+              int vMath = analogRead(A0);                            //  Load the SLA BAttery voltage through resistive divider on ADC A0 
+              float slaV = vMath * (15 / 1023.0);                    //  slaV will be displayed in Volts
+       delay(50);               
+            
+           // Take some actions function of battery voltage!
+           
+            if (slaV < 10.5) {                         // Practically, this will end the normal operation leaving only the receiver section open to monitor the frequency. Beep is just for tests.
+                int fBeep = 440; 
+                int beepL = 1000; tone(8, 440, 2000);
+            }
+            
+            else if ( slaV >= 10 && slaV < 11.5) {     // Watch out! The battery goes low, limit comms!
+                int fBeep = 1320;
+                int beepL = 150; tone(8, 880, 500); delay(100); tone(8, 440, 500);
+            }
+            
+            
+            else if ( slaV >=11.5 && slaV < 13.6) {    // This is OK, normal operations
+                int fBeep = 2900;
+                int beepL = 150; tone(8, 2900, 75);
+            }
+            
+            else if (slaV >= 13.6) {                 // Over voltage for some reasons. Not normal!
+                int fBeep = 2640;
+                int beepL = 500;  tone (8, 1320, 500); delay(100); tone(8, 3340, 500);                   // We have to do something to discharge the battery!
+            }
+            
+  
+            digitalWrite(ptt, LOW);                    // Go to StandBy
+           }  // Thank you! END of Courtesy Tone
