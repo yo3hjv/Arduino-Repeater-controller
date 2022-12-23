@@ -3,6 +3,9 @@ Controll a UHF emergency repeater with Arduino Board
 
 The required hardware up to version 4.3.
 
+The full project link, here:
+https://yo3hjv.blogspot.com/2016/02/low-profile-duplex-uhf-repeater-for-ham.html?m=0
+
 The repeater consists pf two UHF portable radio, in my case, GP300.
 From the Rx Radio, we have Carrier Detect / PL Detect output, and AUDIO OUT-Deemphasized audio at around 450 mVpp
 From the Tx Radio, we have PTT input (tied to +5V) and AUDIO IN - Tx modulation INPUT at 25 mVpp.
