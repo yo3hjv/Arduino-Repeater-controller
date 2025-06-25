@@ -5,9 +5,9 @@
 
    MAIN FEATURES
    -The repeater can be activated by RSSI (read by A2) or by logical Carrier Detection. This must be selected at compiling!
+   -Beacon 1. The Identifier is triggered at fixed, user defined interval. Can also be triggered by manual switch
    -It identifies via CW message; the Callsign, the QTH and the time interval can be set by user
-   -The Identifier (Beacon 1) can be triggered by manual switch
-   -During the QSO, a 4 tone sequence is superimposed when the timer for beacon is reached
+   -Beacon 2. During the QSO, a 4 tone sequence is superimposed when the timer for beacon is reached
    -Courtesy tone that indicate the voltage of the battery with tones rising or decreasing in frequency and single flat tone (for voltage >=11.5 && volts < 13.6). 
    -A "very low battery" tone to alert the operators to use it only if necessary (440 Hz for 300 msec)
    
