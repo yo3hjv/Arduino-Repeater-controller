@@ -2,11 +2,17 @@
    This junk is meant to controll a small repeater in UHF made of two portable radios
    Motorola GP300.
    v_8.2
-  
-   In this version:
-      -Some code housekeeping;
-      -Introducing the option to use analog reading of RSSI or Carrier Detect (uncomment line 89)
-      -Added input pullup pin at D4 to transmit Beacon 1 when tied to Ground
+
+   MAIN FEATURES
+   -The repeater can be activated by RSSI (read by A2) or by logical Carrier Detection. This must be selected at compiling!
+   -It identifies via CW message; the Callsign, the QTH and the time interval can be set by user
+   -The Identifier (Beacon 1) can be triggered by manual switch
+   -During the QSO, a 4 tone sequence is superimposed when the timer for beacon is reached
+   -Courtesy tone that indicate the voltage of the battery with tones rising or decreasing in frequency and single flat tone (for voltage >=11.5 && volts < 13.6). 
+   -A "very low battery" tone to alert the operators to use it only if necessary (440 Hz for 300 msec)
+   
+   
+   Many thanks to RW6HHL, Vladimir, for getting me out of my comfort zone and asking for new features and also pointed to some issues!
       
        This code is released under "Beerware License" (buy me a beer when you see me).
        Author: Adrian Florescu YO3HJV
