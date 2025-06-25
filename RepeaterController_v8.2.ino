@@ -79,25 +79,21 @@ struct t_mtab morsetab[] = {
 
 ///////// define repeater beacon Messages ////////////
 
-#define  RPT_call       "YO3KSR"   // Call sign of the repeater
-   
+#define  RPT_call       "YO3KSR"   // Call sign of the repeater 
    // #define  RPT_ctcss      ("79.7")    // CTCSS tone uncomment if needed
-
 #define  RPT_loc        ""    // Repeater QTH locator   
 #define  END_msg        "QRV"        // Goodbye Message
    
 int RssiThrs = 650;     // arbitrary value to detect the threshold of RSSI analog signal
 
 //CW   tone output
-
 #define  CW_PITCH        (700)   // CW pitch
    
- #define   REPEATbyRSSI   // Comment this line if the receiving radio have Carrier Detect logical output
+#define   REPEATbyRSSI   // Comment this line if the receiving radio have Carrier Detect logical output
                          // leave it like this if the receiving is determined by RSSI
 // I/O pinout
 
 int TxLedPin = 2;                  // pin for TX LED 
-int rx = 6;                        // Carrier Detect digital input pin
 int PttPin = 12;                   // PTT digital output pin
 int CarDetPin = 6;                 // Carrier Detect Logic pin
 int VccBatteryPin = A0;            // Analog input for battery voltage detection
@@ -121,21 +117,13 @@ bool isRepeating = false;      // To track repeater state for RSSI mode
  
 void setup () {
     
-            Serial.begin(9600);              // for debugging
-              
-               pinMode(CW_pin, OUTPUT);      // Output pin for beacon and audio
-                //  digitalWrite(CW_pin, LOW);           // CW pin init
-   
-               pinMode(CarDetPin, INPUT_PULLUP) ;   //  Carrier Detect on pin 10 with transistor, tied up with 10 kOhm.
-                                             //  when signal is received goes LOW.                             
-               pinMode(PttPin, OUTPUT);          //  Here we have PTT. When transmission is needed, this pin goes HIGH.
-              
-               pinMode(TxLedPin, OUTPUT);           //  TX LED
-               
-               pinMode(BeaconPin, INPUT_PULLUP);    // Input pullup pin for manual beacon trigger
-               
-                Serial.println("ready");
-                
+            Serial.begin(9600);              // for debugging              
+               pinMode(CW_pin, OUTPUT);      // Output pin for beacon and audio   
+               pinMode(CarDetPin, INPUT_PULLUP) ;   //  Carrier Detect when signal is received goes LOW.                             
+               pinMode(PttPin, OUTPUT);          //  Here we have PTT. When transmission is needed, this pin goes HIGH.              
+               pinMode(TxLedPin, OUTPUT);           //  TX LED               
+               pinMode(BeaconPin, INPUT_PULLUP);    // Input pullup pin for manual beacon trigger               
+                Serial.println("ready");                
                                      }
  
              
@@ -160,8 +148,7 @@ void CdetRepeat ()
                                       digitalWrite(TxLedPin, LOW);
                                    }
                              delay(50);                               // Delay a little bit to avoid bouncing
-                                                      }
-                                                  
+                                                      }                                                  
                  lastcDet = cDet;                                     // save the current state as the last state
                                                                       // for next time through the loop
                    }  // END of 'repeat' function
@@ -202,8 +189,7 @@ void RssiRepeat() {
         // If not repeating, do nothing.
     }
 }
-     
-     
+         
      
      
           // Function to return the battery voltage     
@@ -275,10 +261,8 @@ void loop() {
  
  
         // **** Audio Beacon 1 - for StandBy (No QSO in progress)
-void beacon1() {
-      
-          delay (500);
-       
+void beacon1() {      
+          delay (500);       
   delay (100);                                     // Wait a little
               sendmsg(RPT_call) ;                  //send call
               delay(7*DOTLEN) ;
@@ -290,10 +274,8 @@ void beacon1() {
               delay(7*DOTLEN) ;
               sendmsg(END_msg);
               delay(3*DOTLEN) ;
-                         return;  }
-                          
-        // **** Audio Beacon 2 - For repeating (QSO in progress)
-       
+                         return;  }                          
+        // **** Audio Beacon 2 - For repeating (QSO in progress)       
         void beacon2() {
               delay(100);
             tone(CW_pin, 2880, 100);
@@ -307,8 +289,7 @@ void beacon1() {
    
       void courtesy() {
                                                                      // We read the voltage of the battery via 'battery' external function
-               volts = battery() ;
-                    
+               volts = battery() ;                    
                //Serial.println();
                //Serial.print(volts);
                     delay(50);                                      // Wait for the portable radio who stops transmitting to get into the receiving mode to be able to hear the tone
