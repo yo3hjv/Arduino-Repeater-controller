@@ -1,12 +1,13 @@
-# Arduino-Repeater-controller
-Controll a UHF emergency repeater with Arduino Board
-
-The full project link, here:
-https://yo3hjv.blogspot.com/2016/02/low-profile-duplex-uhf-repeater-for-ham.html?m=0
-
-# Arduino UHF Repeater Controller
+# Arduino UHF Repeater Controller v9.0
 
 A simple yet powerful Arduino-based repeater controller for UHF radios (like Motorola GP300), featuring dual activation modes, hysteresis, non-blocking timing, and various beacon and courtesy tone functions.
+Controll a UHF emergency repeater (or any other repeater) with Arduino Board
+
+Hardware details, here:
+https://yo3hjv.blogspot.com/2016/02/low-profile-duplex-uhf-repeater-for-ham.html?m=0
+
+
+
 
 ## Features
 
@@ -45,8 +46,8 @@ A simple yet powerful Arduino-based repeater controller for UHF radios (like Mot
 
 | Pin | Function | Description |
 |-----|----------|-------------|
-| A0  | VccBatteryPin | Battery voltage monitoring through voltage divider |
-| A2  | RssiPin | RSSI input from receiver |
+| A0  | VccBatteryPin | !!!!!!!!!!!!!!!!!!!Battery voltage monitoring through voltage divider !!!!!!!!!!!!!!!!!!! |
+| A2  | RssiPin | RSSI input from receiver (max.5V)!!!! |
 | D2  | TxLedPin | TX LED indicator |
 | D4  | BeaconPin | Manual beacon trigger (active LOW) |
 | D5  | CW_pin | Audio output for beacons and courtesy tones |
@@ -61,7 +62,7 @@ A simple yet powerful Arduino-based repeater controller for UHF radios (like Mot
                                   |            |
 Battery Voltage Divider --------- | A0         |
                                   |            |
-RSSI from Receiver --------------- | A2         |
+RSSI from Receiver -------------- | A2         |
                                   |            |
 TX LED Indicator ---------------- | D2         |
                                   |            |
