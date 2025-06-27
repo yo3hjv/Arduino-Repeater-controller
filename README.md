@@ -1,6 +1,6 @@
-# Arduino UHF Repeater Controller v9.0
+# Arduino Repeater Controller v9.0
 
-A simple yet powerful Arduino-based repeater controller for UHF radios (like Motorola GP300), featuring dual activation modes, hysteresis, non-blocking timing, and various beacon and courtesy tone functions.
+A simple yet powerful Arduino-based repeater controller for FM radios (like Motorola GP/GM300), featuring dual activation modes, hysteresis, non-blocking timing, and various beacon and courtesy tone functions.
 Controll a UHF emergency repeater (or any other repeater) with Arduino Board
 
 Hardware details, here:
