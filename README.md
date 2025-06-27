@@ -60,7 +60,7 @@ https://yo3hjv.blogspot.com/2016/02/low-profile-duplex-uhf-repeater-for-ham.html
 ```
                                   +------------+
                                   |            |
-Battery Voltage Divider --------- | A0         |
+Battery Voltage ----------------- | A0         |
                                   |            |
 RSSI from Receiver -------------- | A2         |
                                   |            |
@@ -68,7 +68,7 @@ TX LED Indicator ---------------- | D2         |
                                   |            |
 Manual Beacon Switch ------------ | D4         |
                                   |            |
-Audio Output -------------------- | D5    ARD  |
+Audio Output (Beacons)----------- | D5    ARD  |
                                   |      UINO  |
 Carrier Detect Input ------------ | D6         |
                                   |            |
