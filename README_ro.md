@@ -1,5 +1,5 @@
 
-# Controler Releu UHF cu Arduino v9.0
+# Controller repetor radio cu Arduino v9.0
 
 Un controler de repetor simplu, bazat pe Arduino pentru stații radio (precum Motorola GP300), cu mod  dublu de activare, histerezis, temporizare non-blocantă și funcții variate pentru balize și ton de curtoazie.
 
